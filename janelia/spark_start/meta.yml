@@ -1,0 +1,51 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: spark_start
+description: |
+  Starts Spark processing either by spinning up a cluster or setting up
+  variables so that processing can run locally as individual jobs
+keywords:
+  - spark
+  - bigdata
+  - infrastructure
+components: []
+subworkflows:
+  - spark_cluster
+input:
+  - ch_meta:
+      type: tuple
+      description: |
+        Channel of tuples where the first item is the meta map which 
+        contains a "spark_work_dir" field.
+        Structure: [ val(meta), [ files ] ]
+  - data_dir:
+      type: path
+      description: Paths to be mounted in the Spark workers for data access
+  - spark_cluster:
+      type: boolean
+      description: Whether or not to spin up a Spark cluster
+  - spark_workers:
+      type: integer
+      description: Number of workers in the cluster
+  - spark_worker_cores:
+      type: integer
+      description: Number of cores per Spark worker
+  - spark_gb_per_core:
+      type: integer
+      description: Number of GB of memory per worker core
+  - spark_driver_cores:
+      type: integer
+      description: Number of cores for the Spark driver
+  - spark_driver_memory:
+      type: string
+      description: Memory specification for the Spark driver
+
+output:
+  - spark_context:
+      type: tuple
+      description: |
+        The tuple from input ch_meta with the spark_context map appended.
+        Structure: [ val(meta), [ files ], val(spark_context) ]
+
+authors:
+  - "@krokicki"
+  - "@cgoina"

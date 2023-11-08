@@ -1,0 +1,35 @@
+name: "spark_terminate"
+description: Terminate a Spark cluster by writing a marker file to the work dir
+keywords:
+  - spark
+tools:
+  - spark:
+      description: Apache Spark is an analytics engine for large-scale data processing
+      homepage: https://spark.apache.org/
+      documentation: https://spark.apache.org/docs/latest/
+      tool_dev_url: https://github.com/apache/spark
+      licence: ["Apache License 2.0"]
+
+input:
+  - spark_uri:
+      type: string
+      description: |
+        URI of the Spark manager
+  - cluster_work_dir:
+      type: path
+      description: |
+        The cluster work directory where the manager will run
+
+output:
+  - spark_uri:
+      type: string
+      description: |
+        URI of the Spark manager
+  - cluster_work_fullpath:
+      type: string
+      description: |
+        Full path to the cluster work directory where the manager is running
+
+authors:
+  - "@krokicki"
+  - "@cgoina"

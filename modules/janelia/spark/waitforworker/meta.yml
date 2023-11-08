@@ -1,0 +1,43 @@
+name: "spark_waitforworker"
+description: Wait for a Spark worker to be ready
+keywords:
+  - spark
+tools:
+  - spark:
+      description: Apache Spark is an analytics engine for large-scale data processing
+      homepage: https://spark.apache.org/
+      documentation: https://spark.apache.org/docs/latest/
+      tool_dev_url: https://github.com/apache/spark
+      licence: ["Apache License 2.0"]
+
+input:
+  - spark_uri:
+      type: string
+      description: |
+        URI of the Spark manager
+  - cluster_work_dir:
+      type: path
+      description: |
+        The cluster work directory where the manager is running
+  - worker_id:
+      type: string
+      description: |
+        Identifier (usually an index) for the worker.
+
+output:
+  - spark_uri:
+      type: string
+      description: |
+        URI of the Spark manager
+  - cluster_work_fullpath:
+      type: string
+      description: |
+        Full path to the cluster work directory where the manager is running
+  - worker_id:
+      type: string
+      description: |
+        Identifier (usually an index) for the worker.
+
+authors:
+  - "@krokicki"
+  - "@cgoina"

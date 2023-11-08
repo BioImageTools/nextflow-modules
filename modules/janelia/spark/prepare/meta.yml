@@ -1,0 +1,31 @@
+name: "spark_prepare"
+description: Prepare work directory for running a Spark cluster
+keywords:
+  - spark
+tools:
+  - spark:
+      description: Apache Spark is an analytics engine for large-scale data processing
+      homepage: https://spark.apache.org/
+      documentation: https://spark.apache.org/docs/latest/
+      tool_dev_url: https://github.com/apache/spark
+      licence: ["Apache License 2.0"]
+
+input:
+  - spark_work_dir:
+      type: path
+      description: |
+        Parent directory where the cluster work directory should be created
+  - spark_work_dir_name:
+      type: string
+      description: |
+        Name of cluster work directory
+
+output:
+  - cluster_work_fullpath:
+      type: string
+      description: |
+        Full path to the cluster work directory
+
+authors:
+  - "@krokicki"
+  - "@cgoina"

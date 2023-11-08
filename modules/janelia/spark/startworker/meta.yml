@@ -1,0 +1,48 @@
+name: "spark_startworker"
+description: Start a Spark worker which runs until the terminate module is called
+keywords:
+  - spark
+tools:
+  - spark:
+      description: Apache Spark is an analytics engine for large-scale data processing
+      homepage: https://spark.apache.org/
+      documentation: https://spark.apache.org/docs/latest/
+      tool_dev_url: https://github.com/apache/spark
+      licence: ["Apache License 2.0"]
+
+input:
+  - spark_uri:
+      type: string
+      description: |
+        URI of the Spark manager
+  - cluster_work_dir:
+      type: path
+      description: |
+        The cluster work directory where the manager will run
+  - worker_id:
+      type: string
+      description: |
+        Identifier (usually an index) for the worker.
+  - data_dir:
+      type: path
+      description: |
+        Shared path (or list of paths) which should be mounted into the 
+        worker process for data access.
+  - worker_cores:
+      type: path
+      description: |
+        Total number of cores to allocate to the worker
+  - worker_mem_in_gb:
+      type: path
+      description: |
+        Total amount of memory to allocate to the worker
+
+output:
+  - spark_uri:
+      type: string
+      description: |
+        Full path to the cluster work directory where the manager is running
+
+authors:
+  - "@krokicki"
+  - "@cgoina"

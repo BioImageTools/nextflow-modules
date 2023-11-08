@@ -1,0 +1,40 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: spark_cluster
+description: Creates a Spark cluster and waits for it to be ready
+keywords:
+  - spark
+  - bigdata
+  - infrastructure
+components:
+  - spark/prepare
+  - spark/startmanager
+  - spark/startworker
+  - spark/waitformanager
+  - spark/waitforworker
+input:
+  - spark_work_dir:
+      description: |
+        Shared work directory for the Spark cluster 
+        Structure: [ val(spark_work_dir) ]
+  - data_dir:
+      type: path
+      description: Paths to be mounted in the Spark workers for data access
+  - spark_workers:
+      type: integer
+      description: Number of workers in the cluster
+  - spark_worker_cores:
+      type: integer
+      description: Number of cores per worker
+  - spark_gb_per_core:
+      type: integer
+      description: Number of GB of memory per worker core
+
+output:
+  - done:
+      description: |
+        URI of the Spark cluster and its work directory
+        Structure: [ spark_uri, spark_work_dir ]
+
+authors:
+  - "@krokicki"
+  - "@cgoina"
