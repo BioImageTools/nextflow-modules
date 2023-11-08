@@ -4,9 +4,11 @@ nf-core-compatible Nextflow modules for bioimage analysis tools.
 
 The repository is formatted to be compatible with [nf-core tooling](https://nf-co.re/), in particular the [module system](https://github.com/nf-core/modules/tree/master).
 
+The `org_path` is "bits" which stands for **B**io**I**mage**T**ool**s**.
+
 ## Prerequisites
 
-You  must [install nf-core tools](https://nf-co.re/tools) in your environment before you can install modules from this repository.
+You must [install nf-core tools](https://nf-co.re/tools) in your environment before you can install modules from this repository.
 
 ## Installing a module
 
