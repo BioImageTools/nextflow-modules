@@ -1,8 +1,8 @@
-include { SPARK_PREPARE        } from '../../../modules/janelia/spark/prepare/main'
-include { SPARK_STARTMANAGER   } from '../../../modules/janelia/spark/startmanager/main'
-include { SPARK_WAITFORMANAGER } from '../../../modules/janelia/spark/waitformanager/main'
-include { SPARK_STARTWORKER    } from '../../../modules/janelia/spark/startworker/main'
-include { SPARK_WAITFORWORKER  } from '../../../modules/janelia/spark/waitforworker/main'
+include { SPARK_PREPARE        } from '../../../modules/bits/spark/prepare/main'
+include { SPARK_STARTMANAGER   } from '../../../modules/bits/spark/startmanager/main'
+include { SPARK_WAITFORMANAGER } from '../../../modules/bits/spark/waitformanager/main'
+include { SPARK_STARTWORKER    } from '../../../modules/bits/spark/startworker/main'
+include { SPARK_WAITFORWORKER  } from '../../../modules/bits/spark/waitforworker/main'
 
 /**
  * Create a new Spark cluster for each spark_work_dir and wait for it to be ready.

@@ -1,4 +1,4 @@
-include { SPARK_TERMINATE } from '../../../modules/janelia/spark/terminate/main'
+include { SPARK_TERMINATE } from '../../../modules/bits/spark/terminate/main'
 
 /**
  * Terminate the specified Spark clusters.
