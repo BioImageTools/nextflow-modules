@@ -10,6 +10,36 @@ The `org_path` is "bits" which stands for **B**io**I**mage**T**ool**s**.
 
 You must [install nf-core tools](https://nf-co.re/tools) in your environment before you can install modules from this repository.
 
+## Initializing an nf-core pipeline
+
+To install modules from this repository you must have an nf-core-compatible pipeline folder structure. Your pipeline should be called `main.nf`, and you should have a `nextflow.config` in the same folder.  With the current version (2.10) of nf-core tools, you must also initialize some directory and file structure:
+
+```bash
+touch .nf-core.yml
+mkdir modules
+```
+
+Next, create a `modules.json` file in that folder like this:
+```json
+{
+    "name": "",
+    "homePage": "",
+    "repos": {
+        "git@github.com:BioImageTools/nextflow-modules.git": {
+            "modules": {
+            }
+        }
+    }
+}
+```
+
+When you install a module, it may prompt you with some questions the first time through. Just accept the defaults:
+
+```
+Is this repository an nf-core pipeline or a fork of nf-core/modules? pipeline
+Would you like me to add this config now? yes
+```
+
 ## Installing a module
 
 To install a module into a pipeline, use the `modules install` command, e.g.:
