@@ -1,3 +1,11 @@
 spark:
-  - subworkflows/local/spark/**
-  - tests/subworkflows/local/spark/**
+  - subworkflows/bits/spark_cluster/**
+  - tests/subworkflows/bits/spark/**
+dask:
+  - modules/bits/dask/**
+  - tests/modules/bits/dask/**
+  - subworkflows/bits/dask_cluster/**
+  - subworkflows/bits/start_dask/**
+  - subworkflows/bits/stop_dask/**
+  - tests/subworkflows/bits/dask_cluster/**
+  - tests/subworkflows/bits/start_dask/**
