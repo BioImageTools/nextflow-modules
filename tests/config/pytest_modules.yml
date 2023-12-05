@@ -1,6 +1,9 @@
 spark:
   - subworkflows/bits/spark_cluster/**
   - tests/subworkflows/bits/spark/**
+cellpose:
+  - modules/bits/cellpose/**
+  - tests/modules/bits/cellpose/**
 dask:
   - modules/bits/dask/**
   - tests/modules/bits/dask/**
