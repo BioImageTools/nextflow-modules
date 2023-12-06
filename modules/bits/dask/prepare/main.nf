@@ -15,7 +15,6 @@ process DASK_PREPARE {
     script:
     """
     cluster_work_dir="${dask_work_dir}/${meta.id}"
-    mkdir -p \${cluster_work_dir}
     cluster_work_fullpath=\$(readlink -f \${cluster_work_dir})
     echo "Cluster work dir: \${cluster_work_fullpath}"
 
