@@ -32,7 +32,7 @@ process DASK_STARTWORKER {
     worker_dir = dask_worker_work_dir
 
     """
-    cluster_work_fullpath=\$(realpath ${cluster_work_dir})
+    cluster_work_fullpath=\$(readlink ${cluster_work_dir})
 
     /opt/scripts/daskscripts/startworker.sh \
         --container-engine ${container_engine} \

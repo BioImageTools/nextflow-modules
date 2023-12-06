@@ -5,7 +5,7 @@ process CELLPOSE {
     clusterOptions { task.ext.cluster_opts }
 
     input:
-    tuple val(meta), path(image), path(output_dir)
+    tuple val(meta), path(image), path(output_dir), path(dask_config)
     tuple val(image_subpath), val(output_name)
     val(dask_scheduler)
     val(cellpose_cpus)
@@ -19,6 +19,7 @@ process CELLPOSE {
     path('versions.yml')                                               , emit: versions
 
     script:
+    log.info "!!!!!${dask_config}"
     def args = task.ext.args ?: ''
     def input_image_subpath_arg = image_subpath
                                     ? "--input-subpath ${image_subpath}"

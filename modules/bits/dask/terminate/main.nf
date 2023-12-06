@@ -15,7 +15,7 @@ process DASK_TERMINATE {
     def cluster_work_path = cluster_work_dir
     def terminate_file_name = "${cluster_work_path}/terminate-dask"
     """
-    cluster_work_fullpath=\$(realpath ${cluster_work_dir})
+    cluster_work_fullpath=\$(readlink ${cluster_work_dir})
 
     echo "\$(date): Terminate DASK Scheduler: ${cluster_work_path}"
     echo $PWD

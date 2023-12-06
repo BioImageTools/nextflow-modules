@@ -23,7 +23,7 @@ process DASK_WAITFORWORKERS {
     cluster_work_fullpath = cluster_work_dir.resolveSymLink().toString()
 
     """
-    cluster_work_fullpath=\$(realpath ${cluster_work_dir})
+    cluster_work_fullpath=\$(readlink ${cluster_work_dir})
 
     # waitforworkers.sh sets available_workers variable
     . /opt/scripts/daskscripts/waitforworkers.sh \

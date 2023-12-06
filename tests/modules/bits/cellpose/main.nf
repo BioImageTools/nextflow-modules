@@ -17,8 +17,8 @@ workflow test_distributed_cellpose_with_dask {
             id: 'test_distributed_cellpose_with_dask',
         ],
         params.dask_config 
-            ? test_input_output + [ file(params.dask_config).parent ]
-            : test_input_output
+            ? test_input_output + [ file(params.dask_config) ]
+            : test_input_output + []
     ]
     def cellpose_test_data_ch = Channel.of(cellpose_test_data)
     // create a dask cluster
@@ -47,7 +47,8 @@ workflow test_distributed_cellpose_with_dask {
     def cellpose_input = cluster.cluster_info
     | join(cellpose_test_data_ch, by: 0)
     | multiMap { meta, cluster_work_dir, scheduler_address, available_workers, datapaths ->
-        data: [ meta, datapaths[0], datapaths[1] ]
+        log.info "!!!!!! $datapaths"
+        data: [ meta, datapaths[0], datapaths[1], datapaths[2] ]
         cluster: scheduler_address
         names: [ params.input_image_dataset, params.output_image_name ]
     }

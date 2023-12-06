@@ -18,7 +18,7 @@ process DASK_WAITFORMANAGER {
     def terminate_file_name = "${cluster_work_dir}/terminate-dask"
 
     """
-    cluster_work_fullpath=\$(realpath ${cluster_work_dir})
+    cluster_work_fullpath=\$(readlink ${cluster_work_dir})
 
     /opt/scripts/daskscripts/waitformanager.sh \
         --flist "${dask_scheduler_info_file},${terminate_file_name}" \
