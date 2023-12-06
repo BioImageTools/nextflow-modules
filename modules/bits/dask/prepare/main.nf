@@ -14,7 +14,7 @@ process DASK_PREPARE {
 
     script:
     """
-    cluster_work_dir=\$(realpath \${dask_work_dir})
+    cluster_work_dir=\$(realpath ${dask_work_dir})
     cluster_work_fullpath="\${cluster_work_dir}/${meta.id}"
     /opt/scripts/daskscripts/prepare.sh "\${cluster_work_fullpath}"
     echo "Cluster work dir: \${cluster_work_fullpath}"
