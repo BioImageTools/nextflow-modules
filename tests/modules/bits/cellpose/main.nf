@@ -6,30 +6,40 @@ include { DASK_WAITFORMANAGER } from '../../../../modules/bits/dask/waitformanag
 include { DASK_WAITFORWORKERS } from '../../../../modules/bits/dask/waitforworkers/main'
 include { CELLPOSE            } from '../../../../modules/bits/cellpose/main'
 
+process UNTAR_RAW_INPUT {
+    input: path(tarfile, stageAs:'input-data/*')
+    output: path('input-data/*.n5')
+
+    script:
+    """
+    tar -xvf $tarfile -C input-data
+    """
+}
+
 workflow test_distributed_cellpose_with_dask {
-    def input_image = params.test_data['stitched_images']['n5']['r1_n5']
-    def test_input_output = [
-        file(input_image),
-        file(params.output_image_dir),
-    ]
-    def cellpose_test_data = [
+    // retrieve and untar the data from test_datasets repository
+    def cellpose_test_data = UNTAR_RAW_INPUT (file(params.test_data['stitched_images']['n5']['r1_n5'])) |
+    map { input_image ->
         [
-            id: 'test_distributed_cellpose_with_dask',
-        ],
-        params.dask_config 
-            ? test_input_output + [ file(params.dask_config) ]
-            : test_input_output + []
-    ]
-    def cellpose_test_data_ch = Channel.of(cellpose_test_data)
+            [
+                id: 'test_distributed_cellpose_with_dask',
+            ],
+            [
+                input_image,
+                file(params.output_image_dir),
+                params.dask_config ? file(params.dask_config) : []
+            ]
+        ]
+    }
     // create a dask cluster
-    def dask_prepare_result = DASK_PREPARE(cellpose_test_data_ch, file(params.dask_work_dir))
+    def dask_prepare_result = DASK_PREPARE(cellpose_test_data, file(params.dask_work_dir))
     DASK_STARTMANAGER(dask_prepare_result)
     DASK_WAITFORMANAGER(dask_prepare_result)
     def dask_cluster_info = DASK_WAITFORMANAGER.out.cluster_info
     def dask_workers_list = 1..params.cellpose_workers
 
     def dask_workers_input = dask_cluster_info
-    | join(cellpose_test_data_ch, by: 0)
+    | join(cellpose_test_data, by: 0)
     | combine(dask_workers_list)
     | multiMap { meta, cluster_work_dir, scheduler_address, data, worker_id ->
         log.info "Cluster data files: ${data}"
@@ -45,17 +55,16 @@ workflow test_distributed_cellpose_with_dask {
                                       params.cellpose_required_workers)
 
     def cellpose_input = cluster.cluster_info
-    | join(cellpose_test_data_ch, by: 0)
+    | join(cellpose_test_data, by: 0)
     | multiMap { meta, cluster_work_dir, scheduler_address, available_workers, datapaths ->
-        log.info "!!!!!! $datapaths"
-        data: [ meta, datapaths[0], datapaths[1], datapaths[2] ]
+        def (input_path, output_path, dask_config_path) = datapaths
+        def dask_config_path_param = dask_config_path ?: []
+        data: [ meta, input_path, params.input_image_subpath, dask_config_path_param, output_path, params.output_image_name ]
         cluster: scheduler_address
-        names: [ params.input_image_dataset, params.output_image_name ]
     }
 
     def cellpose_results = CELLPOSE(
         cellpose_input.data,
-        cellpose_input.names,
         cellpose_input.cluster,
         params.cellpose_driver_cpus,
         params.cellpose_driver_mem_gb,
