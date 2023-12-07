@@ -5,7 +5,13 @@ process CELLPOSE {
     clusterOptions { task.ext.cluster_opts }
 
     input:
-    tuple val(meta), path(image), val(image_subpath), path(dask_config), path(output_dir), val(output_name)
+    tuple val(meta),
+          path(image),
+          val(image_subpath),
+          path(dask_config),
+          path(models_path),
+          path(output_dir),
+          val(output_name)
     val(dask_scheduler)
     val(cellpose_cpus)
     val(cellpose_mem_in_gb)
@@ -22,6 +28,12 @@ process CELLPOSE {
     def input_image_subpath_arg = image_subpath
                                     ? "--input-subpath ${image_subpath}"
                                     : ''
+    def set_models_path = models_path 
+        ? "models_fullpath=\$(readlink ${models_path}) && \
+           mkdir -p \${models_fullpath} && \
+           export CELLPOSE_LOCAL_MODELS_PATH=\${models_fullpath}"
+        : ''
+    def models_path_arg = models_path ? "--models-dir ${models_path}" : ''
     def output_image_name = output_name ?: ''
     def output = output_image_name ? "${output_dir}/${output_image_name}" : output_dir
     def dask_scheduler_arg = dask_scheduler ? "--dask-scheduler ${dask_scheduler}" : ''
@@ -36,9 +48,11 @@ process CELLPOSE {
     # create the output directory using the canonical name
     output_fullpath=\$(readlink ${output_dir})
     mkdir -p \${output_fullpath}
+    ${set_models_path}
     python /opt/scripts/cellpose/distributed_cellpose.py \
         -i ${image} ${input_image_subpath_arg} \
         -o ${output} \
+        ${models_path_arg} \
         ${dask_scheduler_arg} \
         ${dask_config_arg} \
         ${args}

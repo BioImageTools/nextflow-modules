@@ -20,17 +20,23 @@ workflow test_distributed_cellpose_with_dask {
     // retrieve and untar the data from test_datasets repository
     def cellpose_test_data = UNTAR_RAW_INPUT (file(params.test_data['stitched_images']['n5']['r1_n5'])) |
     map { input_image ->
+        // if the path to the dask config and to the models dir is specified
+        // make sure they are added to the input paths so that 
+        // they get mounted in the dask workers
+        def path_inputs = [ 
+            input_image,
+            file(params.output_image_dir),
+        ] +
+        (params.dask_config ? [ file(params.dask_config) ] : []) +
+        (params.cellpose_models_dir ? [ file(params.cellpose_models_dir) ] : [])
         [
             [
                 id: 'test_distributed_cellpose_with_dask',
             ],
-            [
-                input_image,
-                file(params.output_image_dir),
-                params.dask_config ? file(params.dask_config) : []
-            ]
+            path_inputs,
         ]
     }
+    cellpose_test_data.subscribe { log.info "Cellpose path inputs: $it" }
     // create a dask cluster
     def dask_prepare_result = DASK_PREPARE(cellpose_test_data, file(params.dask_work_dir))
     DASK_STARTMANAGER(dask_prepare_result)
@@ -57,9 +63,19 @@ workflow test_distributed_cellpose_with_dask {
     def cellpose_input = cluster.cluster_info
     | join(cellpose_test_data, by: 0)
     | multiMap { meta, cluster_work_dir, scheduler_address, available_workers, datapaths ->
-        def (input_path, output_path, dask_config_path) = datapaths
+        def (input_path, output_path, dask_config_path, cellpose_models_path) = datapaths
+        log.info "!!!!!!! $datapaths"
         def dask_config_path_param = dask_config_path ?: []
-        data: [ meta, input_path, params.input_image_subpath, dask_config_path_param, output_path, params.output_image_name ]
+        def cellpose_models_path_param = cellpose_models_path ?: []
+        data: [
+            meta,
+            input_path,
+            params.input_image_subpath,
+            dask_config_path_param,
+            cellpose_models_path_param,
+            output_path,
+            params.output_image_name,
+        ]
         cluster: scheduler_address
     }
 
