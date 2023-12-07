@@ -8,8 +8,8 @@ process CELLPOSE {
     tuple val(meta),
           path(image),
           val(image_subpath),
-          path(dask_config),
-          path(models_path),
+          path(dask_config), // this is optional - if undefined pass in as empty list ([])
+          path(models_path), // this is optional - if undefined pass in as empty list ([])
           path(output_dir),
           val(output_name)
     val(dask_scheduler)

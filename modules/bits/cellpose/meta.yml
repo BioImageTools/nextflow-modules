@@ -16,6 +16,14 @@ input:
   - image_subpath:
       type: string
       description: Relative path to the image dataset if needed (for N5 or zarr containers)
+  - dask_config:
+      type: path
+      description: |
+        Optional path to the dask config. If this is not specified pass in as empty list.
+  - models_path:
+      type: path
+      description: |
+        Optional path to the cellpose models cache directory. If this is not specified pass in as empty list.
   - outputdir:
       type: path
       description: Directory location of the output image
