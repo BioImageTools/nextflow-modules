@@ -18,9 +18,15 @@ workflow test_start_stop_dask {
         1, // worker cores
         1.5, // worker mem
     )
-    | STOP_DASK
 
     dask_cluster_info.subscribe {
         log.info "Cluster info: $it"
     }
+
+    def terminated_cluster = STOP_DASK(dask_cluster_info)
+
+    terminated_cluster.subscribe {
+        log.info "Terminated cluster info: $it"
+    }
+
 }
