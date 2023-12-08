@@ -1,5 +1,5 @@
 process CELLPOSE {
-    container 'docker.io/multifish/cellpose:2.2.3-dask2023.10.1-py11'
+    container 'bioimagetools/cellpose:2.2.3-dask2023.10.1-py11'
     cpus { cellpose_cpus }
     memory "${cellpose_mem_in_gb} GB"
     clusterOptions { task.ext.cluster_opts }

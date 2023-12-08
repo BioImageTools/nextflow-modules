@@ -7,6 +7,8 @@ include { DASK_WAITFORWORKERS } from '../../../../modules/bits/dask/waitforworke
 include { CELLPOSE            } from '../../../../modules/bits/cellpose/main'
 
 process UNTAR_RAW_INPUT {
+    container { task.ext.container }
+
     input: path(tarfile, stageAs:'input-data/*')
     output: path('input-data/*.n5')
 

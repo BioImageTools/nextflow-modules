@@ -1,6 +1,6 @@
 process DASK_STARTMANAGER {
     label 'process_single'
-    container { task.ext.container ?: 'docker.io/biocontainers/dask:2023.10.1-py11-ol9_cv1' }
+    container { task.ext.container ?: 'bioimagetools/dask:2023.10.1-py11-ol9' }
 
     input:
     tuple val(meta), path(cluster_work_dir)
