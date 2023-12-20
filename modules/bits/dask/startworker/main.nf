@@ -5,7 +5,10 @@ process DASK_STARTWORKER {
     clusterOptions { task.ext.cluster_opts }
 
     input:
-    tuple val(meta), path(cluster_work_dir), val(scheduler_address), val(worker_id)
+    tuple val(meta),
+          path(cluster_work_dir, stageAs: 'dask_work/*'),
+          val(scheduler_address),
+          val(worker_id)
     path(data)
     val(worker_cpus)
     val(worker_mem_in_gb)

@@ -3,7 +3,9 @@ process DASK_WAITFORWORKERS {
     container { task.ext.container ?: 'bioimagetools/dask:2023.10.1-py11-ol9' }
 
     input:
-    tuple val(meta), path(cluster_work_dir), val(scheduler_address)
+    tuple val(meta),
+          path(cluster_work_dir, stageAs: 'dask_work/*'),
+          val(scheduler_address)
     val(total_workers)
     val(required_workers)
 

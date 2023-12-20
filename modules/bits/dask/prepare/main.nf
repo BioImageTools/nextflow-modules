@@ -4,7 +4,7 @@ process DASK_PREPARE {
 
     input:
     tuple val(meta), path(data)
-    path(dask_work_dir)
+    path(dask_work_dir, stageAs: 'dask_work/*')
 
     output:
     tuple val(meta), env(cluster_work_fullpath)
