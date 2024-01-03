@@ -66,20 +66,20 @@ workflow test_distributed_cellpose_with_dask {
     | join(cellpose_test_data, by: 0)
     | multiMap { meta, cluster_work_dir, scheduler_address, available_workers, datapaths ->
         def (input_path, output_path, dask_config_path, cellpose_models_path) = datapaths
-        // empty or undefined paths are passed in as empty lists since a path parameter can be a list
-        def dask_config_path_param = dask_config_path ?: []
-        def cellpose_models_path_param = cellpose_models_path ?: []
         def data = [
             meta,
             input_path,
             params.input_image_subpath,
-            dask_config_path_param,
-            cellpose_models_path_param,
+            cellpose_models_path ?: [], // if undefined pass the path as empty list
             output_path,
             params.output_image_name,
         ]
+        def cluster = [
+            scheduler_address,
+            dask_config_path ?: [], // if undefined pass the path as empty list
+        ]
         data: data
-        cluster: scheduler_address
+        cluster: cluster
     }
 
     def cellpose_results = CELLPOSE(
