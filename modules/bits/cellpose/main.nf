@@ -12,7 +12,7 @@ process CELLPOSE {
           path(output_dir),
           val(output_name)
     tuple val(dask_scheduler),
-          path(dask_config), // this is optional - if undefined pass in as empty list ([])
+          path(dask_config) // this is optional - if undefined pass in as empty list ([])
     val(cellpose_cpus)
     val(cellpose_mem_in_gb)
 

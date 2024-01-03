@@ -74,12 +74,12 @@ workflow test_distributed_cellpose_with_dask {
             output_path,
             params.output_image_name,
         ]
-        def cluster = [
+        def cluster_info = [
             scheduler_address,
             dask_config_path ?: [], // if undefined pass the path as empty list
         ]
         data: data
-        cluster: cluster
+        cluster: cluster_info
     }
 
     def cellpose_results = CELLPOSE(
