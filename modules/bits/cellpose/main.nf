@@ -10,7 +10,8 @@ process CELLPOSE {
           val(image_subpath),
           path(models_path), // this is optional - if undefined pass in as empty list ([])
           path(output_dir),
-          val(output_name)
+          val(output_name),
+          path(working_dir) // this is optional
     tuple val(dask_scheduler),
           path(dask_config) // this is optional - if undefined pass in as empty list ([])
     val(cellpose_cpus)
@@ -34,6 +35,7 @@ process CELLPOSE {
            export CELLPOSE_LOCAL_MODELS_PATH=\${models_fullpath}"
         : ''
     def models_path_arg = models_path ? "--models-dir ${models_path}" : ''
+    def working_dir_arg = working_dir ?: output_dir
     def output_image_name = output_name ?: ''
     def output = output_image_name ? "${output_dir}/${output_image_name}" : output_dir
     def dask_scheduler_arg = dask_scheduler ? "--dask-scheduler ${dask_scheduler}" : ''
@@ -48,10 +50,13 @@ process CELLPOSE {
     # create the output directory using the canonical name
     output_fullpath=\$(readlink ${output_dir})
     mkdir -p \${output_fullpath}
+    working_fullpath=\$(readlink ${working_dir_arg})
+    mkdir -p \${working_fullpath}
     ${set_models_path}
     python /opt/scripts/cellpose/distributed_cellpose.py \
         -i ${image} ${input_image_subpath_arg} \
         -o ${output} \
+        --working-dir \${working_fullpath} \
         ${models_path_arg} \
         ${dask_scheduler_arg} \
         ${dask_config_arg} \

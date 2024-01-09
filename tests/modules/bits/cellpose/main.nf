@@ -29,6 +29,7 @@ workflow test_distributed_cellpose_with_dask {
             input_image,
             file(params.output_image_dir),
         ] +
+        (params.cellpose_working_dir ? [ file(params.cellpose_working_dir) ] : [])
         (params.dask_config ? [ file(params.dask_config) ] : []) +
         (params.cellpose_models_dir ? [ file(params.cellpose_models_dir) ] : [])
         [
@@ -38,7 +39,7 @@ workflow test_distributed_cellpose_with_dask {
             path_inputs,
         ]
     }
-    cellpose_test_data.subscribe { log.debug "Cellpose path inputs: $it" }
+    cellpose_test_data.subscribe { log.info "Cellpose path inputs: $it" }
     // create a dask cluster
     def dask_prepare_result = DASK_PREPARE(cellpose_test_data, file(params.dask_work_dir))
     DASK_STARTMANAGER(dask_prepare_result)
@@ -65,18 +66,25 @@ workflow test_distributed_cellpose_with_dask {
     def cellpose_input = cluster.cluster_info
     | join(cellpose_test_data, by: 0)
     | multiMap { meta, cluster_work_dir, scheduler_address, available_workers, datapaths ->
-        def (input_path, output_path, dask_config_path, cellpose_models_path) = datapaths
+        def (input_path, output_path) = datapaths
+        def cellpose_working_path = params.cellpose_working_dir
+            ? file(params.cellpose_working_dir) : []
+        def dask_config_path = params.dask_config
+            ? file(params.dask_config) : []
+        def cellpose_models_path = params.cellpose_models_dir
+            ? file(params.cellpose_models_dir) : []
         def data = [
             meta,
             input_path,
             params.input_image_subpath,
-            cellpose_models_path ?: [], // if undefined pass the path as empty list
+            cellpose_models_path,
             output_path,
             params.output_image_name,
+            cellpose_working_path,
         ]
         def cluster_info = [
             scheduler_address,
-            dask_config_path ?: [], // if undefined pass the path as empty list
+            dask_config_path,
         ]
         data: data
         cluster: cluster_info
