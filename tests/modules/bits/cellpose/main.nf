@@ -29,7 +29,7 @@ workflow test_distributed_cellpose_with_dask {
             input_image,
             file(params.output_image_dir),
         ] +
-        (params.cellpose_working_dir ? [ file(params.cellpose_working_dir) ] : [])
+        (params.cellpose_work_dir ? [ file(params.cellpose_work_dir) ] : [])
         (params.dask_config ? [ file(params.dask_config) ] : []) +
         (params.cellpose_models_dir ? [ file(params.cellpose_models_dir) ] : [])
         [
@@ -67,8 +67,8 @@ workflow test_distributed_cellpose_with_dask {
     | join(cellpose_test_data, by: 0)
     | multiMap { meta, cluster_work_dir, scheduler_address, available_workers, datapaths ->
         def (input_path, output_path) = datapaths
-        def cellpose_working_path = params.cellpose_working_dir
-            ? file(params.cellpose_working_dir) : []
+        def cellpose_working_path = params.cellpose_work_dir
+            ? file(params.cellpose_work_dir) : []
         def dask_config_path = params.dask_config
             ? file(params.dask_config) : []
         def cellpose_models_path = params.cellpose_models_dir

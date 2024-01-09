@@ -6,12 +6,12 @@ process CELLPOSE {
 
     input:
     tuple val(meta),
-          path(image),
+          path(image, stageAs: 'cellpose-input/*'),
           val(image_subpath),
-          path(models_path), // this is optional - if undefined pass in as empty list ([])
+          path(models_path, stageAs: 'cellpose-models/*'), // this is optional - if undefined pass in as empty list ([])
           path(output_dir),
           val(output_name),
-          path(working_dir) // this is optional
+          path(working_dir, stageAs: 'cellpose-work/*') // this is optional
     tuple val(dask_scheduler),
           path(dask_config) // this is optional - if undefined pass in as empty list ([])
     val(cellpose_cpus)
@@ -47,6 +47,7 @@ process CELLPOSE {
     }
     log.debug "Output name:ext => ${output_name_noext}:${output_name_ext}"
     """
+    input_image_fullpath=\$(readlink ${image})
     # create the output directory using the canonical name
     output_fullpath=\$(readlink ${output_dir})
     mkdir -p \${output_fullpath}
@@ -54,7 +55,7 @@ process CELLPOSE {
     mkdir -p \${working_fullpath}
     ${set_models_path}
     python /opt/scripts/cellpose/distributed_cellpose.py \
-        -i ${image} ${input_image_subpath_arg} \
+        -i \${input_image_fullpath} ${input_image_subpath_arg} \
         -o ${output} \
         --working-dir \${working_fullpath} \
         ${models_path_arg} \
