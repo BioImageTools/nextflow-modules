@@ -29,7 +29,7 @@ workflow test_distributed_cellpose_with_dask {
             input_image,
             file(params.output_image_dir),
         ] +
-        (params.cellpose_work_dir ? [ file(params.cellpose_work_dir) ] : [])
+        (params.cellpose_work_dir ? [ file(params.cellpose_work_dir) ] : []) +
         (params.dask_config ? [ file(params.dask_config) ] : []) +
         (params.cellpose_models_dir ? [ file(params.cellpose_models_dir) ] : [])
         [
