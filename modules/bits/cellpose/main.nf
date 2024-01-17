@@ -18,11 +18,12 @@ process CELLPOSE {
     val(cellpose_mem_in_gb)
 
     output:
-    tuple val(meta),
-          path(image),
-          path("${output_dir}/${output_name_noext}*${output_name_ext}"), emit: results
-    tuple val(meta), val(output_name_noext), val(output_name_ext)      , emit: result_names
-    path('versions.yml')                                               , emit: versions
+    tuple val(meta), path(image), path("${output_dir}/${output_name_noext}*${output_name_ext}"), emit: results
+    tuple val(meta), val(output_name_noext), val(output_name_ext)                              , emit: result_names
+    path('versions.yml')                                                                       , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
