@@ -1,0 +1,66 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "yolo_detect"
+description: write your description here
+keywords:
+  - machine-learning
+  - yolo
+  - image-detection
+  - bounding box
+  - computer-vision
+tools:
+  - "yolo":
+      description: "Wrapper of Yolo object detection predict function"
+      homepage: "https://docs.ultralytics.com/"
+      documentation: "https://docs.ultralytics.com/quickstart/"
+      tool_dev_url: "https://github.com/ultralytics/ultralytics"
+      doi: ""
+      licence: ["AGPL-3.0"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - image:
+        type: file
+        description: Input image file for object detection
+        pattern: "*.{jpg,png,jpeg,tiff,bmp}"
+
+output:
+  bboxes:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+
+      - "predict/labels/*.txt":
+          type: file
+          description: Sorted BAM/CRAM/SAM file
+          pattern: "*.txt"
+  crops:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+
+      - "predict/crops/*.jpg":
+          type: file
+          description: Cropped images of detected objects
+          pattern: "*.jpg"
+
+  versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+
+authors:
+  - "@BioinfoTongLI"
+maintainers:
+  - "@BioinfoTongLI"
