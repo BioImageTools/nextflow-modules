@@ -8,7 +8,7 @@ process YOLO_DETECT {
         : 'quay.io/cellgeni/yolo:latest'}"
 
     input:
-    tuple val(meta), path(image), val(yolo_task)
+    tuple val(meta), path(image)
 
     output:
     tuple val(meta), path("predict/*.jpg"), emit: detections, optional: true
