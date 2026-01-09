@@ -1,0 +1,102 @@
+{
+    "predict - tif": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "astronaut.jpg:md5,d8cfb5c1d5999ed0658e190d5299ab08"
+                    ]
+                ],
+                "1": [
+                    
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "astronaut.txt:md5,2ddd9747cb2fcbc3d3ca53e364e36d01"
+                    ]
+                ],
+                "3": [
+                    "versions.yml:md5,7d519fdac20fe83d379de81a90c9c42b"
+                ],
+                "bboxes": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "astronaut.txt:md5,2ddd9747cb2fcbc3d3ca53e364e36d01"
+                    ]
+                ],
+                "crops": [
+                    
+                ],
+                "detections": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "astronaut.jpg:md5,d8cfb5c1d5999ed0658e190d5299ab08"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,7d519fdac20fe83d379de81a90c9c42b"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.5"
+        },
+        "timestamp": "2026-01-09T15:51:30.456367986"
+    },
+    "predict - tif - stub": {
+        "content": [
+            {
+                "0": [
+                    
+                ],
+                "1": [
+                    
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "dummy.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "3": [
+                    "versions.yml:md5,19d5a0561da1ae3b5ad5bc698e3a3b7b"
+                ],
+                "bboxes": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "dummy.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "crops": [
+                    
+                ],
+                "detections": [
+                    
+                ],
+                "versions": [
+                    "versions.yml:md5,19d5a0561da1ae3b5ad5bc698e3a3b7b"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.5"
+        },
+        "timestamp": "2026-01-09T15:47:32.508705533"
+    }
+}

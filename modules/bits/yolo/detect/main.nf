@@ -4,8 +4,8 @@ process YOLO_DETECT {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'ultralytics/ultralytics:latest-python'
-        : 'ultralytics/ultralytics:latest-python'}"
+        ? 'quay.io/cellgeni/yolo:latest'
+        : 'quay.io/cellgeni/yolo:latest'}"
 
     input:
     tuple val(meta), path(image), val(yolo_task)
@@ -23,8 +23,9 @@ process YOLO_DETECT {
     def args = task.ext.args ?: ''
     """
     yolo detect predict \\
-        ${image} \\
+        source=${image} \\
         project=./ \\
+        save_txt=true \\
         ${args}
 
     cat <<-END_VERSIONS > versions.yml
