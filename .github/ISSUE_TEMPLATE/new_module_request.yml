@@ -1,0 +1,137 @@
+name: "New nf-core module request"
+description: "Request a new nf-core style module with all required information"
+title: "[MODULE]: <tool>/<task>"
+labels: ["module-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the request! Please fill in all required fields so we can generate the module without back-and-forth.
+
+  - type: dropdown
+    id: request_type
+    attributes:
+      label: Request type
+      description: What should be created?
+      options:
+        - Module
+        - Subworkflow
+    validations:
+      required: true
+
+  - type: input
+    id: module_name
+    attributes:
+      label: Module name
+      description: Use nf-core naming, e.g. `tool/task` or `tool/subtool/task` (lowercase).
+      placeholder: e.g. fastqc/fastqc
+    validations:
+      required: true
+
+  - type: input
+    id: tool_homepage
+    attributes:
+      label: Tool homepage
+      description: URL to the official tool page or repo.
+      placeholder: https://...
+    validations:
+      required: true
+
+  - type: input
+    id: tool_version
+    attributes:
+      label: Tool version
+      description: Exact version to pin in the module.
+      placeholder: e.g. 1.2.3
+    validations:
+      required: true
+
+  - type: textarea
+    id: tool_description
+    attributes:
+      label: Tool description
+      description: 1-2 sentences describing what the tool does.
+      placeholder: Short description
+    validations:
+      required: true
+
+  - type: textarea
+    id: cli_command
+    attributes:
+      label: Command to run
+      description: The exact CLI command (with placeholders) that the module should execute.
+      placeholder: |
+        tool \
+          --input {input} \
+          --output {output} \
+          --threads {task.cpus}
+    validations:
+      required: true
+
+  - type: textarea
+    id: inputs_outputs
+    attributes:
+      label: Inputs and outputs
+      description: List expected inputs/outputs with types, using nf-core `meta` where appropriate.
+      placeholder: |
+        Inputs:
+        - meta: map
+        - reads: path (fastq.gz)
+
+        Outputs:
+        - meta: map
+        - bam: path
+        - versions: path (versions.yml)
+    validations:
+      required: true
+
+  - type: textarea
+    id: conda_container
+    attributes:
+      label: Conda and/or container details
+      description: Provide conda package(s) with channel + version OR a container image (preferably on quay.io). Include any runtime dependencies.
+      placeholder: |
+        Conda:
+        - bioconda::tool=1.2.3
+
+        Container:
+        - quay.io/biocontainers/tool:1.2.3--pyhdfd78af_0
+    validations:
+      required: true
+
+  - type: textarea
+    id: test_data
+    attributes:
+      label: Test data (public)
+      description: Link to small, public test data suitable for nf-core CI and describe expected output files (or checksums).
+      placeholder: |
+        Data URL: https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/...
+        Expected outputs:
+        - sample.bam
+        - versions.yml
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Confirmations
+      description: These are required to proceed.
+      options:
+        - label: I searched for existing nf-core modules and did not find an equivalent.
+          required: true
+        - label: Test data is public, small, and suitable for CI.
+          required: true
+        - label: All required inputs/outputs are listed.
+          required: true
+        - label: The command above is the one the module should execute.
+          required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Optional details, edge cases, or parameters that should be exposed via `task.ext.args`.
+      placeholder: Any other information
+    validations:
+      required: false
