@@ -39,6 +39,7 @@ When you install a module, it may prompt you with some questions the first time 
 Is this repository an nf-core pipeline or a fork of nf-core/modules? pipeline
 Would you like me to add this config now? yes
 ```
+For advnaced usage/setting, please see [this documentation](https://claptar.notion.site/Converting-pipeline-to-NF-CORE-201b0afc406980d49eddf32accdf0af2) from @Claptar
 
 ## Installing a module
 
